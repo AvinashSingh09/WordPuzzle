@@ -119,8 +119,11 @@ app.delete('/api/results', async (req, res) => {
   }
 });
 
-// React Router wildcard fallback - serve index.html for client-side routing
-app.use((req, res) => {
+// React Router SPA fallback - serve index.html only for page routes (not API or static files)
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.includes('.')) {
+    return next();
+  }
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
