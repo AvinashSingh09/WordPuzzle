@@ -120,7 +120,7 @@ app.delete('/api/results', async (req, res) => {
 });
 
 // React Router wildcard fallback - serve index.html for client-side routing
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
