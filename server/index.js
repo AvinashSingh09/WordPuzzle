@@ -15,13 +15,15 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Middleware
+// Enable CORS for frontend static site cross-origin requests
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files from Vite build output (dist)
+// Optionally serve static frontend files if built in same directory
 const distPath = path.join(__dirname, '../dist');
-app.use(express.static(distPath));
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
 
 // MongoDB Schema & Model
 const gameResultSchema = new mongoose.Schema({
@@ -48,6 +50,15 @@ if (MONGODB_URI) {
 }
 
 // API Routes
+
+// Root check route
+app.get('/', (req, res, next) => {
+  const indexPath = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  res.send('🚀 WordSearch Backend API Server is active & running!');
+});
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -120,10 +131,10 @@ app.delete('/api/results', async (req, res) => {
   }
 });
 
-// React Router SPA fallback - serve index.html for all non-API page routes
+// Fallback for single-page app or 404
 app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
-    return next();
+    return res.status(404).json({ success: false, error: 'API route not found' });
   }
   const indexPath = path.join(distPath, 'index.html');
   if (fs.existsSync(indexPath)) {
@@ -133,11 +144,5 @@ app.use((req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server listening on http://localhost:${PORT}`);
-  const indexPath = path.join(distPath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    console.log('✅ Static build directory found at:', distPath);
-  } else {
-    console.warn('⚠️ WARNING: dist/index.html not found at:', distPath);
-  }
+  console.log(`🚀 Backend Server listening on http://localhost:${PORT}`);
 });
