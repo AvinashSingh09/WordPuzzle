@@ -20,7 +20,8 @@ export default function GamePage() {
   const [gridSize, setGridSize] = useState(14);
   const [gameState, setGameState] = useState(null);
   
-  // Game metrics
+  // Game metrics (3m 30s = 210s)
+  const TOTAL_TIME_LIMIT = 210;
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [hintedWord, setHintedWord] = useState(null);
@@ -65,11 +66,16 @@ export default function GamePage() {
     let interval = null;
     if (isTimerRunning) {
       interval = setInterval(() => {
-        setTimerSeconds(prev => prev + 1);
+        setTimerSeconds(prev => {
+          if (prev + 1 >= TOTAL_TIME_LIMIT) {
+            setIsTimerRunning(false);
+          }
+          return prev + 1;
+        });
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isTimerRunning]);
+  }, [isTimerRunning, TOTAL_TIME_LIMIT]);
 
   // Word validation logic
   const handleWordFound = (forwardStr, backwardStr, cells) => {
@@ -174,9 +180,10 @@ export default function GamePage() {
               hintedWord={hintedWord}
             />
 
-            {/* Right Column: Time Remaining, RPG Logo & Home Return Button */}
+            {/* Right Column: Time Remaining (3m 30s), RPG Logo & Home Return Button */}
             <RightPanel
               timerSeconds={timerSeconds}
+              totalTimeLimit={TOTAL_TIME_LIMIT}
               onHomeClick={handleGoHome}
             />
           </>
