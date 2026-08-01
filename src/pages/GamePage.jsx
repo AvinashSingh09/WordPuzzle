@@ -7,7 +7,7 @@ import RightPanel from '../components/RightPanel';
 import VictoryModal from '../components/VictoryModal';
 import CustomWordModal from '../components/CustomWordModal';
 import { 
-  PRESET_CATEGORIES, 
+  getSampledGameWords,
   generateWordSearchGrid 
 } from '../utils/wordSearchGenerator';
 import { sound } from '../utils/sound';
@@ -43,8 +43,8 @@ export default function GamePage() {
     if (customWords && customWords.length > 0) {
       wordList = customWords;
     } else {
-      const catObj = PRESET_CATEGORIES[catId] || PRESET_CATEGORIES.construction;
-      wordList = catObj.words;
+      // Generate 10 balanced random words from Easy, Medium & Difficult pools
+      wordList = getSampledGameWords(10);
     }
 
     const newGameData = generateWordSearchGrid(wordList, size);

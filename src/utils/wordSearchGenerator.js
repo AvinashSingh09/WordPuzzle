@@ -1,66 +1,44 @@
 // Word Search Grid Generator & Math Helpers
 
+export const WORD_POOLS = {
+  easy: [
+    'Team', 'Goal', 'Grid', 'Care', 'Safe', 'Lead', 
+    'Grow', 'Learn', 'Build', 'Tower', 'Cable', 'Power'
+  ],
+  medium: [
+    'Project', 'Quality', 'Safety', 'Future', 'Global', 'Energy', 
+    'Railway', 'Utility', 'Design', 'Survey', 'Mentor', 'Buddy', 
+    'Career', 'Success', 'Progress', 'Respect', 'Support', 'Customer', 
+    'Deliver', 'Partner'
+  ],
+  difficult: [
+    'Innovation', 'Excellence', 'Leadership', 'Engineering', 'Infrastructure', 
+    'Construction', 'Transmission', 'Distribution', 'Sustainability', 
+    'Collaboration', 'Accountability', 'Manufacturing', 'Commissioning', 
+    'Reliability', 'Connectivity'
+  ]
+};
+
+// Returns a balanced sample of 10 random words (e.g. 3 Easy, 4 Medium, 3 Difficult) for each game session
+export function getSampledGameWords(totalCount = 10) {
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+  const easySample = shuffle(WORD_POOLS.easy).slice(0, 3);
+  const mediumSample = shuffle(WORD_POOLS.medium).slice(0, 4);
+  const difficultSample = shuffle(WORD_POOLS.difficult).slice(0, 3);
+
+  const combined = [...easySample, ...mediumSample, ...difficultSample];
+  
+  // Return shuffled 10 words
+  return shuffle(combined);
+}
+
 export const PRESET_CATEGORIES = {
   construction: {
     id: 'construction',
-    name: 'Construction & Engineering (Reference)',
-    description: 'Engineering, procurement, blueprints & infrastructure',
-    words: [
-      'tendering',
-      'surveying',
-      'subcontract',
-      'substation',
-      'engineering',
-      'procurement',
-      'blueprints',
-      'downstream'
-    ],
-  },
-  tech: {
-    id: 'tech',
-    name: 'Web & Tech',
-    description: 'Frontend, React, state, and algorithms',
-    words: [
-      'react',
-      'tailwind',
-      'javascript',
-      'typescript',
-      'frontend',
-      'component',
-      'state',
-      'async',
-      'vite'
-    ],
-  },
-  space: {
-    id: 'space',
-    name: 'Space & Cosmos',
-    description: 'Galaxies, nebulae, planets, and orbits',
-    words: [
-      'galaxy',
-      'asteroid',
-      'supernova',
-      'orbit',
-      'telescope',
-      'starlight',
-      'nebula',
-      'cosmos'
-    ],
-  },
-  nature: {
-    id: 'nature',
-    name: 'Nature & Earth',
-    description: 'Mountains, forests, rivers, and wildlife',
-    words: [
-      'mountain',
-      'wildlife',
-      'sunflower',
-      'glacier',
-      'cascade',
-      'breeze',
-      'forest',
-      'river'
-    ],
+    name: 'RPG & KEC Infrastructure',
+    description: 'Corporate values, engineering & infrastructure',
+    words: WORD_POOLS.easy.concat(WORD_POOLS.medium, WORD_POOLS.difficult),
   }
 };
 
@@ -194,4 +172,6 @@ export const HIGHLIGHT_COLORS = [
   { bg: 'bg-cyan-500/80', text: 'text-white', border: 'border-cyan-400', pill: 'bg-cyan-500' },
   { bg: 'bg-pink-500/80', text: 'text-white', border: 'border-pink-400', pill: 'bg-pink-500' },
   { bg: 'bg-teal-500/80', text: 'text-white', border: 'border-teal-400', pill: 'bg-teal-500' },
+  { bg: 'bg-blue-500/80', text: 'text-white', border: 'border-blue-400', pill: 'bg-blue-500' },
+  { bg: 'bg-lime-500/80', text: 'text-white', border: 'border-lime-400', pill: 'bg-lime-500' },
 ];
