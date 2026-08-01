@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function RightPanel({ timerSeconds, onHomeClick, totalTimeLimit = 210 }) {
+export default function RightPanel({ timerSeconds, onHomeClick, totalTimeLimit = 180 }) {
   const remaining = Math.max(0, totalTimeLimit - timerSeconds);
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;

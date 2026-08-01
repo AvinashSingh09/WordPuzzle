@@ -20,8 +20,8 @@ export default function GamePage() {
   const [gridSize, setGridSize] = useState(14);
   const [gameState, setGameState] = useState(null);
   
-  // Game metrics (3m 30s = 210s)
-  const TOTAL_TIME_LIMIT = 210;
+  // Game metrics (3 minutes = 180s)
+  const TOTAL_TIME_LIMIT = 180;
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [hintedWord, setHintedWord] = useState(null);
@@ -180,7 +180,7 @@ export default function GamePage() {
               hintedWord={hintedWord}
             />
 
-            {/* Right Column: Time Remaining (3m 30s), RPG Logo & Home Return Button */}
+            {/* Right Column: Time Remaining (3 Minutes = 180s), RPG Logo & Home Return Button */}
             <RightPanel
               timerSeconds={timerSeconds}
               totalTimeLimit={TOTAL_TIME_LIMIT}
