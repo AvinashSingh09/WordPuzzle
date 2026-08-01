@@ -1,10 +1,6 @@
 // API utility for saving & managing game results in MongoDB backend
 
-const API_HOST = import.meta.env.VITE_API_BASE_URL 
-  ? import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '') 
-  : '';
-
-const API_BASE = `${API_HOST}/api`;
+const API_BASE = '/api';
 
 export async function saveGameResult(data) {
   try {
