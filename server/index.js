@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -119,14 +120,24 @@ app.delete('/api/results', async (req, res) => {
   }
 });
 
-// React Router SPA fallback - serve index.html only for page routes (not API or static files)
+// React Router SPA fallback - serve index.html for all non-API page routes
 app.use((req, res, next) => {
-  if (req.path.startsWith('/api') || req.path.includes('.')) {
+  if (req.path.startsWith('/api')) {
     return next();
   }
-  res.sendFile(path.join(distPath, 'index.html'));
+  const indexPath = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  res.status(404).send('Not Found');
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 Server listening on http://localhost:${PORT}`);
+  const indexPath = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    console.log('✅ Static build directory found at:', distPath);
+  } else {
+    console.warn('⚠️ WARNING: dist/index.html not found at:', distPath);
+  }
 });
