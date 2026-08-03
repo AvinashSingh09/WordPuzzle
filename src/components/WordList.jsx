@@ -23,7 +23,7 @@ export default function WordList({ placedWords, onSelectWordHint }) {
                   isFound ? 'line-through opacity-85 font-semibold' : ''
                 }`}
               >
-                {item.word.toLowerCase()}
+                {item.word.charAt(0).toUpperCase() + item.word.slice(1).toLowerCase()}
               </span>
 
               {isFound && (
